@@ -35,6 +35,13 @@ body > .container {
     border-top: none !important;
 }
 
+.hr_separator_line {
+    border-color: #dddddd;
+}
+#div_pnl_body_log {
+    max-height:20em;
+    overflow-y: scroll
+}
 
 
 

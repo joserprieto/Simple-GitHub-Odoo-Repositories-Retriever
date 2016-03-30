@@ -14,7 +14,7 @@
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
         <!-- TODO: Don't forget to remove next line: -->
-    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <!-- /Bootstrap -->
 
     <!-- custom CSS -->
@@ -35,17 +35,18 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button>
+            </button>-->
             <a class="navbar-brand" href="#">Carga repositorios GitHub con API v. 3.0</a>
         </div>
+        <!--
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <li class="active"><a href="#">Home</a></li>-->
                 <!--                <li><a href="#about">About</a></li>
                                 <li><a href="#contact">Contact</a></li>
                                 <li class="dropdown">
@@ -61,8 +62,8 @@
                                         <li><a href="#">One more separated link</a></li>
                                     </ul>
                                 </li>-->
-            </ul>
-        </div><!--/.nav-collapse -->
+            <!--</ul>
+        </div>--><!--/.nav-collapse -->
     </div>
 </nav><!-- /Fixed navbar -->
 
@@ -79,24 +80,55 @@
         <button id="btn_load_repos" name="btn_load_repos">Cargar repos</button>
     </div>
 
-    <hr class="">
+    <hr class="hr_separator_line">
 
+            <div class="container col-lg-12">
+                <div class="panel panel-success" id="pnl_success">
+                    <div class="panel-heading">
+                        Repositorios cargados con éxito:
+                    </div>
+            <div class="panel-body" id="div_notify_response_success">
+                <p>Datos del usuario/organización del que se han recopilado repositorios:</p>
 
+                <p>El nombre del usuario es <b>Odoo Community Association</b><br> su id de usuario en GitHub es: <b>7600578</b><br>Su
+                    api url es: https://api.github.com/users/OCA<br>Su url en GitHub es: https://github.com/OCA<br>Tipo de
+                    usuario: Organization<br>Compañía: null<br>Url sitio web: http://odoo-community.org/<br>Bio: The GitHub
+                    repos for all Community work on Odoo<br>Repositorios públicos: <b>123</b>
+                </p>
 
-    <div class="panel panel-info col-md-6" id="pnl_notify">
-        <div class="panel-heading">
-            Notificaciones:
-        </div>
-        <div class="panel-body" id="pnl_notify_body">
-            Cargando repositorios del usuario: OCA con ID: 7600578; se carga la URL:https://api.github.com/user/7600578/repos?page=5
+                <p>Se han recopilado un total de <b>123</b> repositorios </p>
+            </div>
         </div>
     </div>
 
-    <div class="panel panel-info col-md-6" id="pnl_log">
-        <div class="panel-heading">
-            Log de acciones:
+
+    <div class="container col-lg-6">
+        <div class="panel panel-info" id="pnl_notify">
+            <div class="panel-heading">
+                <span>
+                    Notificaciones:
+                </span>
+                <button class="btn btn-primary btn-xs pull-right" type="button" data-toggle="collapse" data-target="#pnl_notify_body" aria-expanded="false" aria-controls="pnl_notify_body">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="panel-body collapse" id="pnl_notify_body">
+                Cargando repositorios del usuario: OCA con ID: 7600578; se carga la URL:https://api.github.com/user/7600578/repos?page=5
+            </div>
         </div>
-        <div class="panel-body" id="pnl_log_body">
+    </div>
+
+    <div class="container col-lg-6">
+        <div class="panel panel-info" id="pnl_log">
+            <div class="panel-heading">
+                <span>
+                    Log de acciones:
+                </span>
+                <button class="btn btn-primary btn-xs pull-right" type="button" data-toggle="collapse" data-target="#pnl_log_body" aria-expanded="false" aria-controls="pnl_log_body">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="panel-body collapse" id="pnl_log_body">
             <pre>
             Se ha cargado el número de paginación de repositorios: 0; a continuacion, se solicita el número de paginación de repositorios: 1
 
@@ -224,25 +256,14 @@
 
             Se ha cargado el número de paginación de repositorios: 2; a continuacion, se solicita el número de paginación de repositorios: 3
                 </pre>
+            </div>
         </div>
     </div>
 
-    <div class="panel panel-success" id="pnl_success">
-        <div class="panel-heading">
-            Repositorios cargados con éxito:
-        </div>
-        <div class="panel-body" id="div_notify_response_success">
-            <p>Datos del usuario/organización del que se han recopilado repositorios:</p>
 
-            <p>El nombre del usuario es <b>Odoo Community Association</b><br> su id de usuario en GitHub es: <b>7600578</b><br>Su
-                api url es: https://api.github.com/users/OCA<br>Su url en GitHub es: https://github.com/OCA<br>Tipo de
-                usuario: Organization<br>Compañía: null<br>Url sitio web: http://odoo-community.org/<br>Bio: The GitHub
-                repos for all Community work on Odoo<br>Repositorios públicos: <b>123</b>
-            </p>
 
-            <p>Se han recopilado un total de <b>123</b> repositorios </p>
-        </div>
-    </div>
+
+
 
     <div id="div_response">
         <table class="table table-striped table-hover">
@@ -271,45 +292,57 @@
                 <td>9.0</td>
                 <td>
 
+                    <!--
                     <button class="btn btn-primary btn-sm btn-view-branch-of-repo" type="button" data-repo-id="20881668">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                     </button>
+                    -->
                     <!--<button class="btn btn-primary btn-sm" type="button" id="btn_view_branchs_of_repo_20881668"-->
                                 <!--data-toggle="collapse" data-target="#tr_repo_20881668_branches"-->
                                 <!--aria-expanded="false" aria-controls="tr_repo_20881668_branches">-->
                         <!--<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>-->
                     <!--</button>-->
+                    <button class="btn btn-primary btn-xs" type="button" data-repo-id="20881668"
+                            data-toggle="collapse" data-target="#div_repo_20881668_branches"
+                            aria-expanded="false" aria-controls="div_repo_20881668_branches">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    </button>
                 </td>
             </tr>
-            <tr id="tr_repo_20881668_branches" class="collapse" data-repo-id="20881668">
+            <tr id="tr_repo_20881668_branches" class="" data-repo-id="20881668">
                 <td colspan="8" class="cell-not-border-top">
-                    <div class="panel panel-default">
+
+                    <div class="panel panel-default collapse" id="div_repo_20881668_branches" class="clearfix">
                         <div class="panel-heading">
                             Ramas:
                         </div>
                         <div class="panel-body">
-                            <div id="div_branche_id_12312312_of_repo_20881668">
-                                <div class="col-lg-1">9.0</div>
-                                <div class="col-lg-10">
-                                    <p>Rama 9.0; rama por defecto<br>
-                                        Último commit: sha: 1211ab1 autor: Pedro M. Baeza<br>
-                                        Comentario commit: "Improve new features; remove dependences"</p>
-                                </div>
-                                <div class="col-lg-1">
-                                    <button class="btn btn-primary btn-sm" type="button" data-repo-id="20881668" data-branch-id="12312312">
-                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                                    </button>
-                                </div>
-                                <div class="col-lg-12 collapse in" id="div_branche_id_12312312_of_repo_20881668_contents">
-                                    <table class="table table-stripped table-hover table-condensed">
-<!--                                        <thead>
-                                            <tr>
-                                                <th colspan="2">&nbsp;</th>
-                                                <th>Comentario último commit</th>
-                                                <th>último commit</th>
-                                            </tr>
-                                        </thead>-->
-                                        <tbody>
+                            <!--<div id="div_branches_of_repo_20881668_panel_body_container" class="container">-->
+
+                                <div id="div_branch_id_12312312_of_repo_20881668" class="container">
+                                    <div class="col-lg-1">9.0</div>
+                                    <div class="col-lg-10">
+                                        <p>Rama 9.0; rama por defecto<br>
+                                            Último commit: sha: 1211ab1 autor: Pedro M. Baeza<br>
+                                            Comentario commit: "Improve new features; remove dependences"</p>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <button class="btn btn-primary btn-xs" type="button" data-repo-id="20881668" data-branch-id="12312312"
+                                                data-toggle="collapse" data-target="#div_branch_id_12312312_of_repo_20881668_contents"
+                                                aria-expanded="false" aria-controls="div_branch_id_12312312_of_repo_20881668_contents">
+                                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-12 collapse" id="div_branch_id_12312312_of_repo_20881668_contents">
+                                        <table class="table table-stripped table-hover table-condensed">
+                                            <!--                                        <thead>
+                                                                                        <tr>
+                                                                                            <th colspan="2">&nbsp;</th>
+                                                                                            <th>Comentario último commit</th>
+                                                                                            <th>último commit</th>
+                                                                                        </tr>
+                                                                                    </thead>-->
+                                            <tbody>
                                             <tr>
                                                 <td><span class="glyphicon glyphicon-file text-info"></span></td>
                                                 <td>README</td>
@@ -328,10 +361,60 @@
                                                 <td>[IMP] improvement last changes</td>
                                                 <td>1151ab</td>
                                             </tr>
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div id="div_branch_id_12312310_of_repo_20881668" class="container">
+                                    <div class="col-lg-1">8.0</div>
+                                    <div class="col-lg-10">
+                                        <p>Rama 8.0<br>
+                                            Último commit: sha: 1211ab1 autor: Pedro M. Baeza<br>
+                                            Comentario commit: "Improve new features; remove dependences"</p>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <button class="btn btn-primary btn-xs" type="button" data-repo-id="20881668" data-branch-id="12312312"
+                                                data-toggle="collapse" data-target="#div_branch_id_12312310_of_repo_20881668_contents"
+                                                aria-expanded="false" aria-controls="div_branch_id_12312310_of_repo_20881668_contents">
+                                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-12 collapse" id="div_branch_id_12312310_of_repo_20881668_contents">
+                                        <table class="table table-stripped table-hover table-condensed">
+                                            <!--                                        <thead>
+                                                                                        <tr>
+                                                                                            <th colspan="2">&nbsp;</th>
+                                                                                            <th>Comentario último commit</th>
+                                                                                            <th>último commit</th>
+                                                                                        </tr>
+                                                                                    </thead>-->
+                                            <tbody>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-file text-info"></span></td>
+                                                <td>README</td>
+                                                <td>[IMP] improvement last changes</td>
+                                                <td>1151ab</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-folder-close text-info"></span></td>
+                                                <td>account_anality_close_year</td>
+                                                <td>[IMP] improvement last changes</td>
+                                                <td>1151ab</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="glyphicon glyphicon-folder-close text-info"></span></td>
+                                                <td>account_anality_close_year</td>
+                                                <td>[IMP] improvement last changes</td>
+                                                <td>1151ab</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
                         </div>
                     </div>
 <!--                    <div class="panel panel-default">

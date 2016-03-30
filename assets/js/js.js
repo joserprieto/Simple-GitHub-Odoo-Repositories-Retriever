@@ -32,21 +32,31 @@ joserprieto.RepositoriesCollector.UserFinder = (function(){
         /**
          * Private variables:
          */
-        var sAPIBaseUrl                 = 'https://api.github.com';
-        var sAPIrequestUser             = '/users/:username';
-        var sAPIrequestOrganization     = '/orgs/:org';
-        var sAPIrequestReposByUsername  = '/users/:username/repos';
-        var sAPIrequestReposByUserID    = '/user/:userid/repos';
-        var sAPIrequestReposByOrgname   = '/orgs/:org/repos';
-        var sAPIrequestReposByOrgID     = '/org/:orgid/repos';
-        var iUserID                     = null;
-        var sUserName                   = null;
-        var iOrganizationID             = null;
-        var sOrganizationName           = null;
-        var iCurrentPage                = null;
-        var sCurrentRequestUrl          = null;
-        var jqXHR                       = null;
-        var oEvntFuncPlaceholder        =
+        var sAPIBaseUrl,
+            sAPIrequestUser,
+            sAPIrequestOrganization,
+            sAPIrequestReposByUsername,
+            sAPIrequestReposByUserID,
+            sAPIrequestReposByOrgname,
+            sAPIrequestReposByOrgID,
+            iUserID,
+            sUserName,
+            iOrganizationID,
+            sOrganizationName,
+            iCurrentPage,
+            sCurrentRequestUrl,
+            jqXHR,
+            oEvntFuncPlaceholder;
+
+        // Initialize some variables:
+        sAPIBaseUrl                 = 'https://api.github.com';
+        sAPIrequestUser             = '/users/:username';
+        sAPIrequestOrganization     = '/orgs/:org';
+        sAPIrequestReposByUsername  = '/users/:username/repos';
+        sAPIrequestReposByUserID    = '/user/:userid/repos';
+        sAPIrequestReposByOrgname   = '/orgs/:org/repos';
+        sAPIrequestReposByOrgID     = '/org/:orgid/repos';
+        oEvntFuncPlaceholder        =
         {
             onSearchByUserBeforeStart   :   null,
             onSearchByUserSuccess       :   null,
@@ -55,21 +65,6 @@ joserprieto.RepositoriesCollector.UserFinder = (function(){
         /**
          * Private methods:
          */
-
-        //var _onSearchByUserBeforeStart    =   function(xhr)  {
-            /*
-            joserprieto.RepositoriesCollector.Repositories.getInstance().resetAll();
-            joserprieto.RepositoriesCollector.Repositories.getInstance().setAuthor(
-                data.id, data.login, data.url, data.html_url, data.type, data.name, data.company, data.blog, data.bio, data.public_repos
-            );
-            //console.log(joserprieto.RepositoriesCollector.Repositories.getInstance().getAuthor());
-            if (joserprieto.RepositoriesCollector.Repositories.getInstance().getAuthor())   {
-                joserprieto.RepositoriesCollector.Repositories.getInstance().fetchRepos();
-            }
-            //joserprieto.RepositoriesCollector.Repositories.getInstance().getReposByUser()
-            */
-
-        //};//    /end of Private method _onSearchByUserBeforeStart
 
         /**
          * Private method _searchByUserName
@@ -190,13 +185,13 @@ joserprieto.RepositoriesCollector.UserFinder = (function(){
              */
             on: function(sEventName, fFunction) {
                 switch (sEventName) {
-                    case 'UserSearchStart':
+                    case 'userSearchStart':
                         oEvntFuncPlaceholder.onSearchByUserBeforeStart  = fFunction;
                         break;
-                    case 'FindUserSuccess':
+                    case 'findUserSuccess':
                         oEvntFuncPlaceholder.onSearchByUserSuccess      = fFunction;
                         break;
-                    case 'FindUserFails':
+                    case 'findUserFails':
                         oEvntFuncPlaceholder.onSearchByUserFails        = fFunction;
                         break;
                 }
@@ -229,8 +224,13 @@ joserprieto.RepositoriesCollector.UserFinder = (function(){
  */
 joserprieto.RepositoriesCollector.Repo  = function()  {
 
-    var id, name, description, html_url, clone_url, default_branch  = null;
-    var bInitialized    = false;
+    var id,
+        name,
+        description,
+        html_url,
+        clone_url,
+        default_branch,
+        bInitialized;
 
     this.initialize = function(id, name, description, html_url, clone_url, default_branch)
     {
@@ -306,27 +306,38 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
         /**
          * Private variables:
          */
-        var sAPIBaseUrl                 = 'https://api.github.com';
-        var sAPIrequestUser             = '/users/:username';
-        var sAPIrequestOrganization     = '/orgs/:org';
-        var sAPIrequestReposByUsername  = '/users/:username/repos';
-        var sAPIrequestReposByUserID    = '/user/:userid/repos';
-        var sAPIrequestReposByOrgname   = '/orgs/:org/repos';
-        var sAPIrequestReposByOrgID     = '/org/:orgid/repos';
-        var iUserID                     = null;
-        var sUserName                   = null;
-        var iCurrentPage                = null;
-        var sCurrentRequestUrl          = null;
-        var sUrlReposOfUser             = null;
-        var sUrlCurrentPageReposOfUser  = null;
-        var sUrlNextPageReposOfUser     = null;
-        var sResponseHeaderLink         = null;
-        var iNextPage                   = null;
-        var sResponseHeaderLink         = null;
-        var bNextPage                   = null;
-        var iNumReposFetched            = null;
-        var aReposOfAuthor              = [];
-        var oEvntFuncPlaceholder        =
+        var sAPIBaseUrl,
+            sAPIrequestUser,
+            sAPIrequestOrganization,
+            sAPIrequestReposByUsername,
+            sAPIrequestReposByUserID,
+            sAPIrequestReposByOrgname,
+            sAPIrequestReposByOrgID,
+            iUserID,
+            sUserName,
+            iCurrentPage,
+            sCurrentRequestUrl,
+            sUrlReposOfUser,
+            sUrlCurrentPageReposOfUser,
+            sUrlNextPageReposOfUser,
+            sResponseHeaderLink,
+            bNextPage,
+            iNumReposFetched,
+            aReposOfAuthor,
+            oEvntFuncPlaceholder,
+            oAuthor,
+            oError;
+
+        // Init some variables:
+        sAPIBaseUrl                 = 'https://api.github.com';
+        sAPIrequestUser             = '/users/:username';
+        sAPIrequestOrganization     = '/orgs/:org';
+        sAPIrequestReposByUsername  = '/users/:username/repos';
+        sAPIrequestReposByUserID    = '/user/:userid/repos';
+        sAPIrequestReposByOrgname   = '/orgs/:org/repos';
+        sAPIrequestReposByOrgID     = '/org/:orgid/repos';
+        aReposOfAuthor              = [];
+        oEvntFuncPlaceholder        =
             {
                 onFetchEnd                  : null,
                 onFetchStart                : null,
@@ -335,7 +346,7 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
                 onFetchNextPage             : null,
                 onSaveOneRepo               : null
             };
-        var oAuthor  =
+        oAuthor  =
             {
                 id                          :   null,
                 login                       :   null,
@@ -348,7 +359,7 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
                 bio                         :   null,
                 public_repos                :   null
             };
-        var oError  =
+        oError  =
             {
                 error                       : false,
                 description                 : null,
@@ -576,20 +587,13 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
                     sUrlNextPageReposOfUser     = _sUrlSearchRepos + '?page=' + _iNextPage;
                     sResponseHeaderLink         = jqXHR.getResponseHeader('Link');
                     //Link: <https://api.github.com/user/7600578/repos?page=2>; rel="next", <https://api.github.com/user/7600578/repos?page=5>; rel="last"
-                    bNextPage                   = (sResponseHeaderLink.indexOf(sUrlNextPageReposOfUser) > 0) ? true : false;
+                    bNextPage                   = (sResponseHeaderLink.indexOf(sUrlNextPageReposOfUser) > 0);
                     if  (bNextPage) {
                         sCurrentRequestUrl      = sUrlNextPageReposOfUser;
                         //console.log('Cargamos siguiente página, página nº: ' + iNextPage);
                         _fetchPageReposByAuthor(sUrlNextPageReposOfUser);
                     }   else    {
                         _onEndOfFetch(iCurrentPage, sCurrentRequestUrl);
-                        /*
-                        console.log('Cargadas todas las págians; la última página es la página nº: ' + iCurrentPage);
-                        iCurrentPage = 0;
-                        sText   = 'Datos del usuario/organización del que se han recopilado repositorios:';
-                        console.log(sText);
-                        */
-
                     }
                 }
             }      else    {
@@ -603,7 +607,7 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
          * @private
          */
         var _findRepoByID   =   function(iRepoID)   {
-
+            // TODO
         };//    /end of Private method _findRepoByID
 
         return {
@@ -744,6 +748,67 @@ joserprieto.RepositoriesCollector.Repositories = (function(){
     };//        /end of return of Class Repositories
 })();//         /end of Class Repositories
 
+
+
+joserprieto.RepositoriesCollector.ScriptsConstructor = (function(){
+    /**
+     * Private var oSingletonInstance
+     *
+     * stores a reference to the Singleton:
+     */
+    var oSingletonInstance;
+    /**
+     * Private method SingletonConstructor
+     *
+     * @constructor
+     */
+    function SingletonConstructor() {
+        /**
+         * Private vars
+         */
+        var oRepos,
+            sBashScript,
+            sAddonsPath,
+            sPathOdoo,
+            sPathAddons =   null;
+
+
+        /**
+         * Private methods
+         */
+
+
+
+        return  {
+            /**
+             * Public vars
+             */
+
+
+            /**
+             * Public methods
+             */
+
+
+        };//  /end the return of Private method SingletonConstructor
+    };//      /end of Private method SingletonConstructor
+    return {
+        /**
+         * Public method getInstance
+         *
+         * Get the Singleton instance if one exists or create one if it doesn't
+         *
+         * @returns oSingletonInstance
+         */
+        getInstance: function () {
+            if ( !oSingletonInstance ) {
+                oSingletonInstance = SingletonConstructor();
+            }
+            return oSingletonInstance;
+        }// /end of Public method getInstance
+    };//    /end of return of Class ScriptsConstructor
+})();//     /end of Class ScriptsConstructor
+
 /**
  * Render class
  *
@@ -768,26 +833,37 @@ joserprieto.RepositoriesCollector.Render = (function(){
         /**
          * Private variables:
          */
-        var jqDivNotify         = null;
-        var jqDivNotiSuccess    = null;
-        var jqDivResponse       = null;
-        var jqDivInputCont      = null;
-        var jqTBodyResponse     = null;
-        var jqButton		    = null;
-        var jqInput             = null;
-        var sTplRepoRow         = null;
-        // Init the vars:
-        jqDivNotify             = $('#div_notify');
-        jqDivNotiSuccess        = $('#div_notify_response_success');
-        jqDivResponse           = $('#div_response');
-        jqDivInputCont          = $('#div_input_user_or_organization');
-        jqTBodyResponse         = $('#table_tbody_response');
-        jqInput                 = $('#input_user_or_organization');
-        jqButton                = $('#btn_load_repos');
-        sTplRepoRow             = '<tr id="{{id}}"><th scope="row">{{id}}</th>' +
-                                    '<td>{{id}}</td><td>{{name}}</td><td>{{description}}</td>' +
-                                    '<td>{{html_url}}</td><td>{{clone_url}}</td>' +
-                                    '<td>{{default_branch}}</td></tr>';
+        var jqDivPnlRepoSuccess,
+            jqDivPnlBodyRepoSuccess,
+            jqDivPnlNotify,
+            jqDivPnlBodyNotify,
+            jqDivPnlLog,
+            jqDivPnlBodyLog,
+            jqDivResponse,
+            jqTBodyResponse,
+            jqDivInputCont,
+            jqButton,
+            jqInput,
+            sTplRepoRow;
+        // Init some vars:
+        jqDivPnlRepoSuccess         = $('#div_pnl_success');
+        jqDivPnlBodyRepoSuccess     = $('#div_pnl_body_success');
+        jqDivPnlNotify              = $('#div_pnl_notify');
+        jqDivPnlBodyNotify          = $('#div_pnl_body_notify');
+        jqDivPnlLog                 = $('#div_pnl_log');
+        jqDivPnlBodyLog             = $('#div_pnl_body_log');
+        jqDivResponse               = $('#div_response');
+        jqDivInputCont              = $('#div_input_user_or_organization');
+        jqTBodyResponse             = $('#table_tbody_response');
+        jqInput                     = $('#input_user_or_organization');
+        jqButton                    = $('#btn_load_repos');
+        sTplRepoRow                 = '<tr id="_id_"><th scope="row">_id_</th>' +
+                                        '<td>_id_</td><td>_name_</td><td>_description_</td>' +
+                                        '<td>_html_url_</td><td>_clone_url_</td>' +
+                                        '<td>_default_branch_</td></tr>';
+        // Init action for use jQuery methods:
+        jqDivPnlRepoSuccess.removeClass('hidden');
+        jqDivPnlRepoSuccess.hide();
 
         /**
          * Private methods:
@@ -803,38 +879,273 @@ joserprieto.RepositoriesCollector.Render = (function(){
             $.each(aRepositories, function(iIndex)  {
                 var sHTML   = '';
                 var oRepo   = aRepositories[iIndex];
-                //console.log(oRepo);
-                //console.log(sTplRepoRow);
-                sHTML       = sTplRepoRow.replace(/{{id}}/g, oRepo.id);
-                sHTML       = sHTML.replace(/{{name}}/g, oRepo.name);
-                sHTML       = sHTML.replace(/{{description}}/g, oRepo.description);
-                sHTML       = sHTML.replace(/{{html_url}}/g, oRepo.html_url);
-                sHTML       = sHTML.replace(/{{clone_url}}/g, oRepo.clone_url);
-                sHTML       = sHTML.replace(/{{default_branch}}/g, oRepo.default_branch);
+                sHTML       = sTplRepoRow.replace(/_id_/g, oRepo.id);
+                sHTML       = sHTML.replace(/_name_/g, oRepo.name);
+                sHTML       = sHTML.replace(/_description_/g, oRepo.description);
+                sHTML       = sHTML.replace(/_html_url_/g, oRepo.html_url);
+                sHTML       = sHTML.replace(/_clone_url_/g, oRepo.clone_url);
+                sHTML       = sHTML.replace(/_default_branch_/g, oRepo.default_branch);
                 jqTBodyResponse.append(sHTML);
             });
         };//    /end of Private method _renderRepos
+
         /**
-         * Private method _getNotifyHTML
+         * Private method _getPanelBodyHTML
          *
+         * @param jqPanel
          * @returns {*}
          * @private
          */
-        var _getNotifyHTML  =   function()  {
-            return jqDivNotify.html();
-        };//    /end of Private method _getNotifyHTML
+        var _getPanelBodyHTML   =   function(jqPanel)   {
+            if (jqPanel)
+                return jqPanel.html();
+            else
+                return false;
+        };//    /End of Private method _getPanelBodyHTML
         /**
-         * Private method setNotifyHTML
+         * Private method _setPanelBodyHTML
          *
+         * @param jqPanel
          * @param sHTML
+         * @returns {*}
          * @private
          */
-        var _setNotifyHTML  =   function(sHTML)  {
-            jqDivNotify.html(sHTML);
-        };//    /end of Private method setNotifyHTML
+        var _setPanelBodyHTML   =   function(jqPanel, sHTML)   {
+            if (jqPanel)    {
+                if  (sHTML) {
+                    jqPanel.html(sHTML);
+                }
+                return jqPanel;
+            }   else    {
+                return false;
+            }
+        };//    /End of Private method _setPanelBodyHTML
+        /**
+         * Private method _addHTMLtoPanelBody
+         *
+         * @param jqPanel
+         * @param sHTML
+         * @returns {*}
+         * @private
+         */
+        var _addHTMLtoPanelBody   =   function(jqPanel, sHTML)   {
+            if (jqPanel)    {
+                if  (sHTML) {
+                    var sPreviousHTML   = _getPanelBodyHTML(jqPanel);
+                    var sEndHTML        = sPreviousHTML + sHTML;
+                    jqPanel.html(sEndHTML);
+                }
+                return jqPanel;
+            }   else    {
+                return false;
+            }
+        };//    /End of Private method _addHTMLtoPanelBody
+        /**
+         * Private method _clearPanelBodyHTML
+         * @param jqPanel
+         * @returns {*}
+         * @private
+         */
+        var _clearPanelBodyHTML =   function(jqPanel)   {
+            if (jqPanel)    {
+                jqPanel.empty();
+                return jqPanel;
+            }
+            return false
+        };//    /End of Private method _clearPanelBodyHTML
+        /**
+         * Private method _collapsePanel
+         * @param jqPanel
+         * @param sMode
+         * @private
+         */
+        var _collapsePanel  =       function(jqPanel, sMode)    {
+            if (jqPanel)    {
+                switch (sMode)  {
+                    case 'show':
+                        jqPanel.collapse('show');
+                        break;
+                    case 'hide':
+                        jqPanel.collapse('hide');
+                        break;
+                }
+                return jqPanel;
+            }
+            return false;
+        };//    /end of Private method _collapsePanel
+        var _showPanel      =   function(jqPanel, sMode)    {
+            if (jqPanel)    {
+                switch (sMode)  {
+                    case 'show':
+                        jqPanel.show();
+                        break;
+                    case 'hide':
+                        jqPanel.hide();
+                        break;
+                }
+                return jqPanel;
+            }
+            return false;
+        };//    /
+        var _renderSuccessMsg   = function()    {
+            var sHTML           =   '';
+            var sTplSuccessMsg  =   '<p>Datos del usuario/organización del que se han recopilado repositorios:</p>' +
+                                    '<p>El nombre del usuario es <b>_author_name_</b><br>' +
+                                    ' su id de usuario en GitHub es: <b>_author_id_</b>' +
+                                    '<br>Su api url es: _author_api_url_<br>' +
+                                    'Su url en GitHub es: _author_github_url_<br>' +
+                                    'Tipo de usuario: _author_user_type_<br>' +
+                                    'Compañía: _author_company_<br>' +
+                                    'Url sitio web: _author_web_url_<br>' +
+                                    'Bio: _author_bio_' +
+                                    '<br>Repositorios públicos: <b>_author_public_repos_</b></p>' +
+                                    '<p>Se han recopilado un total de <b>_number_fetched_repos_</b> repositorios </p>';
+            var oRepositories   =   joserprieto.RepositoriesCollector.Repositories.getInstance();
+            var oAuthor         =   oRepositories.getAuthor();
+            sHTML   = sTplSuccessMsg.replace(/_author_name_/g, oAuthor.name);
+            sHTML   = sHTML.replace(/_author_id_/g, oAuthor.id);
+            sHTML   = sHTML.replace(/_author_api_url_/g, oAuthor.url);
+            sHTML   = sHTML.replace(/_author_github_url_/g, oAuthor.html_url);
+            sHTML   = sHTML.replace(/_author_user_type_/g, oAuthor.type);
+            sHTML   = sHTML.replace(/_author_company_/g, oAuthor.company);
+            sHTML   = sHTML.replace(/_author_web_url_/g, oAuthor.blog);
+            sHTML   = sHTML.replace(/_author_bio_/g, oAuthor.bio);
+            sHTML   = sHTML.replace(/_author_public_repos_/g, oAuthor.public_repos);
+            sHTML   = sHTML.replace(/_number_fetched_repos_/g, oRepositories.getNumReposFetched());
+            jqDivPnlBodyRepoSuccess.html(sHTML);
+        };//    /
 
         return {
             // Public methods and variables
+
+
+            /**
+             * Public method clearNotifies
+             *
+             */
+            clearNotifies       :   function()      {
+                _clearPanelBodyHTML(jqDivPnlBodyNotify);
+            },//    /end of Public method clearNotifies
+            /**
+             * Public method addNotifyMsg
+             * @param sMsg
+             */
+            addNotifyMsg        :   function(sMsg)  {
+                _addHTMLtoPanelBody(jqDivPnlBodyNotify, sMsg);
+            },//    /end of Public method addNotifyMsg
+            /**
+             * Public method getNotifyMsg
+             *
+             * @returns {*}
+             */
+            getNotifyMsg        :   function()      {
+                return _getPanelBodyHTML(jqDivPnlBodyNotify);
+            },//    /end of Public method getNotifyMsg
+            /**
+             * Public method setNotifyMsg
+             *
+             * @param sMsg
+             */
+            setNotifyMsg        :   function(sMsg)  {
+                _setPanelBodyHTML(jqDivPnlBodyNotify, sMsg);
+            },//    /end of Public method setNotifyMsg
+            /**
+             * Public method collapseNotifies
+             *
+             * @param sMode
+             */
+            collapseNotifies    :   function(sMode) {
+                _collapsePanel(jqDivPnlBodyNotify, sMode);
+            },//    /end of Public method collapseNotifies
+            /**
+             * Public method clearLogMsg
+             *
+             */
+            clearLogMsg     :   function()      {
+                return _clearPanelBodyHTML(jqDivPnlBodyLog);
+            },//    /end of Public method clearLogMsg
+            /**
+             * Public method addLogMsg
+             * @param sMsg
+             */
+            addLogMsg       :   function(sMsg)  {
+                return _addHTMLtoPanelBody(jqDivPnlBodyLog, sMsg);
+            },//    /end of Public method addLogMsg
+            /**
+             * Public method getLogMsg
+             *
+             * @returns {*}
+             */
+            getLogMsg       :   function()      {
+                return _getPanelBodyHTML(jqDivPnlBodyLog);
+            },//    /end of Public method getLogMsg
+            /**
+             * Public method setLogMsg
+             *
+             * @param sMsg
+             */
+            setLogMsg       :   function(sMsg)  {
+                _setPanelBodyHTML(jqDivPnlBodyLog, sMsg);
+            },//    /end of Public method setLogMsg
+            /**
+             * Public method collapseLog
+             *
+             * @param sMode
+             */
+            collapseLog     :   function(sMode) {
+                _collapsePanel(jqDivPnlBodyLog, sMode);
+            },//    /end of Public method collapseLog
+
+            /**
+             * Public method clearSuccessMsg
+             *
+             */
+            clearSuccessMsg :   function()      {
+                _clearPanelBodyHTML(jqDivPnlBodyRepoSuccess);
+            },//    /end of Public method clearSuccessMsg
+            /**
+             * Public method addSuccessMsg
+             *
+             * @param sMsg
+             */
+            addSuccessMsg   :   function(sMsg)  {
+                _addHTMLtoPanelBody(jqDivPnlBodyRepoSuccess, sMsg);
+            },//    /end of Public method addSuccessMsg
+            /**
+             * Public method getSuccessMsg
+             *
+             * @returns {*}
+             */
+            getSuccessMsg   :   function()      {
+                return _getPanelBodyHTML(jqDivPnlBodyRepoSuccess);
+            },//    /end of Public method getSuccessMsg
+            /**
+             * Public method setSuccessMsg
+             *
+             * @param sMsg
+             */
+            setSuccessMsg   :   function(sMsg)  {
+                _setPanelBodyHTML(jqDivPnlBodyRepoSuccess, sMsg);
+            },//    /end of Public method setSuccessMsg
+            /**
+             * Public method collapseSuccessMsgs
+             *
+             * @param sMode
+             */
+            collapseSuccessMsgs :   function(sMode) {
+                _collapsePanel(jqDivPnlBodyRepoSuccess, sMode);
+            },//    /end of Public method collapseSuccessMsgs
+            /**
+             * Public method showSuccessMsgs
+             *
+             * @param sMode
+             */
+            showSuccessMsgs     :   function(sMode) {
+                if (sMode = 'show') {
+                    _renderSuccessMsg();
+                }
+                _showPanel(jqDivPnlRepoSuccess, sMode);
+            },//    /end of Public method showSuccessMsgs
             /**
              * Public method clearRepositories
              *
@@ -842,29 +1153,6 @@ joserprieto.RepositoriesCollector.Render = (function(){
             clearRepositories   :   function ()     {
                 jqTBodyResponse.empty();
             },//     /end of Public method clearRepositories
-            /**
-             * Public method clearNotifies
-             *
-             */
-            clearNotifies       :   function()      {
-                jqDivNotify.empty();
-            },//    /end of Public method clearNotifies
-            /**
-             * Public method addNotifyMsg
-             * @param sMsg
-             */
-            addNotifyMsg        :   function(sMsg)  {
-                var sTmpMsg = _getNotifyHTML();
-                sTmpMsg += sMsg;
-                _setNotifyHTML(sTmpMsg);
-
-            },//    /end of Public method addNotifyMsg
-            getNotifyMsg        :   function()      {
-                return _getNotifyHTML();
-            },//    /
-            setNotifyMsg        :   function(sMsg)  {
-                _setNotifyHTML(sMsg);
-            },//    /
             /**
              * Public method renderRepositories
              *
@@ -905,158 +1193,154 @@ jrpRepositories = joserprieto.RepositoriesCollector.Repositories;
 jrpRepo         = joserprieto.RepositoriesCollector.Repo;
 jrpRender       = joserprieto.RepositoriesCollector.Render;
 
-
-var oDivNotify	    = null;
-var oDivNotiSuccess = null;
-var oDivResponse    = null;
-var oDivInputCont   = null;
-var oTBodyResponse  = null;
-var oButton		    = null;
-var oInput          = null;
-var jqXHR		    = null;
-var iIdUser         = null;
-var iIdOrganization = null;
-var iCurrentPage    = null;
-var sUser           = null;
-var sUrl            = null;
-
-//var sTplRepoRow     = '<tr id="{{id}}"><th scope="row">{{id}}</th><td>{{name}}</td><td>{{fullname}}</td><td>{{description}}</td><td>{{repourl}}</td><td>{{gitcloneurl}}</td><td>{{defaultbranch}}</td></tr>';
-
-
+/**
+ * Variables with need to have page scope:
+ */
+var jqDivInputCont,
+    jqButton,
+    jqInput,
+    sUser;
 
 $(document).ready(function() {
     // Handler for .ready() called.
 
 
-    oDivNotify	    = $('#div_notify');
-    oDivNotiSuccess = $('#div_notify_response_success');
-    oDivResponse    = $('#div_response');
-    oDivInputCont   = $('#div_input_user_or_organization');
-    oInput          = $('#input_user_or_organization');
-    oButton		    = $('#btn_load_repos');
-    oTBodyResponse  = $('#table_tbody_response');
-    oDivNotify.html("<p>Pulse el bot&oacute;n para cargar repositorios</p>");
+    // Init some variables:
+    jqDivInputCont  = $('#div_input_user_or_organization');
+    jqInput         = $('#input_user_or_organization');
+    jqButton		= $('#btn_load_repos');
 
     var fSearchOfUser =
         function()  {
-            sUser               = oInput.val();
+            sUser   = jqInput.val();
             if (sUser == null || sUser == '')  {
-                var sText = '<p><b>¡¡INTRODUZCA UN NOMBRE DE USUARIO PARA BUSCAR SUS REPOSITORIOS!!</b></p>';
-                oDivNotify.html(sText);
-                oDivInputCont.addClass('has-error');
-                oInput.focus();
+                var sText               = '<p><b>¡¡INTRODUZCA UN NOMBRE DE USUARIO PARA BUSCAR SUS REPOSITORIOS!!</b></p>';
+                var jrpRenderInstance   =   jrpRender.getInstance();
+                jrpRenderInstance.setNotifyMsg(sText);
+                jrpRenderInstance.collapseNotifies('show');
+                jqDivInputCont.addClass('has-error');
+                jqInput.focus();
             }   else    {
-                oDivInputCont.removeClass('has-error');
+                var jrpUserFinderInstance   =   jrpUserFinder.getInstance();
+                jqDivInputCont.removeClass('has-error');
                 // Se muestra que se va a buscar por este usuario
-                jrpUserFinder.getInstance().
-                                on('UserSearchStart', function(data, textStatus, jqXHR) {
-                    var sText = '<p>Se va a buscar por el usuario: <b>' + sUser + '</b></p>';
-                    jrpRender.getInstance().addNotifyMsg(sText);
+                jrpUserFinderInstance.on('userSearchStart', function(data, textStatus, jqXHR) {
+                    var sText               = '<p>Se va a buscar por el usuario: <b>' + sUser + '</b></p>';
+                    var jrpRenderInstance   =   jrpRender.getInstance();
+                    jrpRenderInstance.addLogMsg(sText);
+                    jrpRenderInstance.setNotifyMsg(sText);
+                    jrpRenderInstance.collapseNotifies('show');
+                    jrpRenderInstance.collapseLog('show');
                 });
                 // Si se encuentra el usuario:
-                jrpUserFinder.getInstance().
-                                on('FindUserSuccess', function(data, textStatus, jqXHR) {
-                    var sText = '<p>Se ha encontrado al usuario: <b>' + sUser + '</b></p>';
-                    jrpRender.getInstance().addNotifyMsg(sText);
-                    jrpRepositories.getInstance().
-                        setAuthor(data.id, data.logn, data.url, data.html_url, data.type, data.name, data.company, data.blog, data.bio, data.public_repos);
+                jrpUserFinderInstance.on('findUserSuccess', function(data, textStatus, jqXHR) {
+                    var jrpRenderInstance,
+                        jrpRepositoriesInstance,
+                        sText;
+                    jrpRenderInstance       =   jrpRender.getInstance();
+                    jrpRepositoriesInstance =   jrpRepositories.getInstance();
+                    sText                   = '<p>Se ha encontrado al usuario: <b>' + sUser + '</b></p>';
+                    jrpRenderInstance.addLogMsg(sText);
+                    jrpRenderInstance.setNotifyMsg(sText);
+                    jrpRenderInstance.collapseNotifies('show');
+                    jrpRenderInstance.collapseLog('show');
+                    jrpRepositoriesInstance.setAuthor(  data.id,
+                                                        data.login,
+                                                        data.url,
+                                                        data.html_url,
+                                                        data.type,
+                                                        data.name,
+                                                        data.company,
+                                                        data.blog,
+                                                        data.bio,
+                                                        data.public_repos);
                     fFetchReposOfUser();
                 });
                 // Si hay algún error en la búsqueda:
-                jrpUserFinder.getInstance().
-                                on('FindUserFails', function(jqXHR, textStatus, errorThrow) {
-                    var sText = '<p>Ha habido un error en la búsqueda del usuario: <b>' + sUser + '</b></p>';
-                    jrpRender.getInstance().addNotifyMsg(sText);
+                jrpUserFinderInstance.on('findUserFails', function(jqXHR, textStatus, errorThrow) {
+                    var sText               = '<p>Ha habido un error en la búsqueda del usuario: <b>' + sUser + '</b></p>';
+                    var jrpRenderInstance   =   jrpRender.getInstance();
+                    jrpRenderInstance.addLogMsg(sText);
+                    jrpRenderInstance.setNotifyMsg(sText);
+                    jrpRenderInstance.collapseNotifies('show');
+                    jrpRenderInstance.collapseLog('show');
                 });
                 // Se han definido todos los behaviours; se lanza la búsqueda:
-                jrpUserFinder.getInstance().
-                                searchByUserName(sUser);
+                jrpUserFinderInstance.searchByUserName(sUser);
             }
         };  //  /fSearchOfUser
 
     var fFetchReposOfUser   =
         function()
         {
-            var sText = null;
-            jrpRepositories.getInstance().on('endOfFetch', function(iCurrentPage, sCurrentRequestUrl) {
-                sText = '<p>Se ha terminado de buscar, en el número de paginación: ' + iCurrentPage + '</p>';
-                jrpRender.getInstance().addNotifyMsg(sText);
-                jrpRender.getInstance().renderRepositories(
-                    jrpRepositories.getInstance().getAllRepos()
-                );
+            var sText,
+                jrpRepositoriesInstance;
+            jrpRepositoriesInstance = jrpRepositories.getInstance();
+            jrpRepositoriesInstance.on('endOfFetch', function(iCurrentPage, sCurrentRequestUrl) {
+                var oRepos,
+                    jrpRenderInstance,
+                    sText;
+                oRepos              = jrpRepositories.getInstance().getAllRepos();
+                jrpRenderInstance   = jrpRender.getInstance();
+                sText               = '<p>Se ha terminado de buscar, en el número de paginación: ' +
+                                                                                            iCurrentPage + '</p>';
+                jrpRenderInstance.addLogMsg(sText);
+                jrpRenderInstance.setNotifyMsg(sText);
+                jrpRenderInstance.collapseNotifies('hide');
+                jrpRenderInstance.collapseLog('hide');
+                jrpRenderInstance.showSuccessMsgs('show');
+                jrpRenderInstance.renderRepositories(oRepos);
             });
-            jrpRepositories.getInstance().on('failOfFetch', function() {
-                sText = '<p>Se ha producido un error en la búsqueda, no es posible continuar.</p>';
-                jrpRender.getInstance().addNotifyMsg(sText);
+            jrpRepositoriesInstance.on('failOfFetch', function() {
+                var sText,
+                    jrpRenderInstance;
+                jrpRenderInstance   = jrpRender.getInstance();
+                sText               = '<p>Se ha producido un error en la búsqueda, no es posible continuar.</p>';
+                jrpRenderInstance.addLogMsg(sText);
+                jrpRenderInstance.setNotifyMsg(sText);
+                jrpRenderInstance.collapseNotifies('show');
+                jrpRenderInstance.collapseLog('show');
             });
-            jrpRepositories.getInstance().on('fetchNextPage', function(xhr, iCurrentPage, iNextPage) {
-                sText = '<p>Se ha cargado el número de paginación de repositorios: ' + iCurrentPage +
-                        '; a continuacion, se solicita el número de paginación de repositorios: ' + iNextPage + '</p>';
-                jrpRender.getInstance().addNotifyMsg(sText);
+            jrpRepositoriesInstance.on('fetchNextPage', function(xhr, iCurrentPage, iNextPage) {
+                var sText,
+                    jrpRenderInstance;
+                jrpRenderInstance   = jrpRender.getInstance();
+                sText = '<p>Se ha cargado el número de paginación de repositorios: ' +
+                            iCurrentPage +
+                            '; a continuacion, se solicita el número de paginación de repositorios: ' +
+                            iNextPage +
+                            '</p>';
+                jrpRenderInstance.addLogMsg(sText);
+                jrpRenderInstance.collapseLog('show');
             });
-            jrpRepositories.getInstance().on('saveOneRepo', function(oRepo, iNumReposFetched) {
-                sText = '<p>Se ha guardado el repositorio con ID de GitHub: ' + oRepo.id +
-                    '; ya se han guardado un total de : ' + iNumReposFetched + ' repositorios</p>';
-                jrpRender.getInstance().addNotifyMsg(sText);
+            jrpRepositoriesInstance.on('saveOneRepo', function(oRepo, iNumReposFetched) {
+                var sText,
+                    jrpRenderInstance;
+                jrpRenderInstance   =   jrpRender.getInstance();
+                sText               =   '<p>Se ha guardado el repositorio con ID de GitHub: ' +
+                                            oRepo.id +
+                                            '; ya se han guardado un total de : ' +
+                                            iNumReposFetched +
+                                            ' repositorios</p>';
+                jrpRenderInstance.addLogMsg(sText);
+                jrpRenderInstance.collapseLog('show');
             });
-            // Todos los behavious definidos, se traen los repos:
-            jrpRepositories.getInstance().fetchRepos();
+            // Todos los behaviours definidos, se traen los repos:
+            jrpRepositoriesInstance.fetchRepos();
         };
 
-    oButton.on('click', function() {
-        // Se borra, si hubiese algo, en el div de notificación de respuesta:
-        oDivNotiSuccess.empty();
-        // Se borra, si hubiese algo, la tabla de resultados:
-        oTBodyResponse.empty();
+    jqButton.on('click', function() {
+        var jrpRenderInstance;
+        jrpRenderInstance   =   jrpRender.getInstance();
+        // Se borra, si hubiese algo, en las diferentes áreas de notificación, y los repositorios:
+        jrpRenderInstance.clearLogMsg();
+        jrpRenderInstance.clearNotifies();
+        jrpRenderInstance.clearSuccessMsg();
+        jrpRenderInstance.clearRepositories();
+        jrpRenderInstance.collapseNotifies('hide');
+        jrpRenderInstance.collapseLog('hide');
         // se lanza la petición del usuario:
         fSearchOfUser();
-    }); //  /oButton.on('click',function()
+    }); //  /jqButton.on('click',function()
 
 });
-
-
-
-
-
-/*                jqXHR =
- $.ajax(
- {
- method:     "GET",
- url:        sUrlSearchUser,
- dataType:   'json',
- })
- .done(function(data, textStatus, jqXHR)
- {
- iIdUser         = data.id;
- iIdOrganization = null;
- iCurrentPage    = 0;
- console.log(jqXHR.getAllResponseHeaders());
- var sText = 'Se ha encontrado el usuario: ' +
- sUser +
- ', y su ID en github es: ' +
- data.id;
- oDivNotify.html(sText);
- oGetterRepos.author.id              = data.id;
- oGetterRepos.author.url             = data.url;
- oGetterRepos.author.html_url        = data.html_url;
- oGetterRepos.author.type            = data.type;
- oGetterRepos.author.name            = data.name;
- oGetterRepos.author.company         = data.company;
- oGetterRepos.author.blog            = data.blog;
- oGetterRepos.author.bio             = data.bio;
- oGetterRepos.author.public_repos    = data.public_repos;
- oGetterRepos.num_repos_fetched      = 0;
- fGetsReposOfUser();
- })
- .fail(function(jqXHR, textStatus, errorThrown)
- {
- var sText   = '<p>¡Error en la carga!</p>';
- sText       += '<p>URL que se ha intentado cargar:</p>';
- sText       += '<p>' + sUrlSearchUser + '</p>';
- sText       += '<p>El error es: ' + textStatus;
- sText       += '; ' + errorThrown + '</p>';
- sText       += '<p>No se encuentra el usuario; se probará a buscar como organización</p>';
- iIdUser         = null;
- iCurrentPage    = null;
- oDivNotify.html(sText);
- });*/
